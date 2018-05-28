@@ -29,6 +29,16 @@ var option = {
 	//speed: 1, // 波动速度
 	//anime: false // 开启动画
 }
+
+instance.update(40); // 更新数值
+
+// 若是 dom 元素为大小自适应，可以在 onresize 里调用 update() 对水球图进行重绘，实现大小自适应
+window.onresize = function(){
+	instance.update();
+}
+
+instance.stop();  // 停止动画。停止后，若想继续动画可调用 instance.update();
+
 ```
 
 ## 效果
