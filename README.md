@@ -32,4 +32,4 @@ var option = {
 ```
 
 ## 效果
-![image](http://note.youdao.com/favicon.ico)
+![image](./imgs/example.png)
