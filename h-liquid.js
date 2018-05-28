@@ -1,7 +1,7 @@
 (function(){
 
 
-/*-------------- requestAnimationFrame 的 pollyfill ----------*/
+/*-----requestAnimationFrame pollyfill ----*/
 var lastTime = 0;
 var vendors = ['ms','moz','webkit','o'];
 for(var x=0;x<vendors.length&&!window.requestAnimationFrame;x++){
@@ -145,14 +145,14 @@ var utils = {
 	}
 */
 var Hliquid = window.Hliquid = function(options){
-	var wrapper = document.getElementById(options.el);
+	var wrapper = this.wrapper = document.getElementById(options.el);
 	var canvas;
 	if(typeof wrapper.tagName === 'string' && (wrapper.tagName).toLowerCase() === 'canvas' ){
-		canvas = wrapper;
+		canvas = this.canvas = wrapper;
 		this.h = canvas.height;
 		this.w = canvas.width;			
 	}else {
-		canvas = document.createElement('canvas');
+		canvas = this.canvas = document.createElement('canvas');
 		this.w = canvas.width = utils.width(wrapper);
 		this.h = canvas.height = utils.height(wrapper);
 		wrapper.appendChild(canvas);
@@ -183,7 +183,7 @@ Hliquid.prototype.init = function(options){
 	this.borderColor = options.borderColor || this.color;
 	this.borderWidth = options.borderWidth || 2;
 	this.borderOffset = options.borderOffset || 0;
-	this.waveHeight = options.waveHeight || 8;
+	this.waveHeight = options.waveHeight || 5;
 	this.waveWidth = options.waveWidth || 2;
 	this.speed = options.speed || 0.8;
 	this.anime = (typeof options.anime === 'boolean') ? options.anime : true;
@@ -263,46 +263,58 @@ Hliquid.prototype.drawText = function(){
     context.restore();
 };
 
+
 Hliquid.prototype.stop = function(){
 	if(this.id){
 		cancelAnimationFrame(this.id);
 	}
 }
 
+var _render = function(instance){
+	instance.context.clearRect(0, 0, instance.w, instance.h);
+
+	if(instance.startValue < instance.value){
+        instance.startValue++;
+    }
+    if(instance.startValue > instance.value){
+        var tmp = 1;
+        instance.startValue--;
+    }
+
+    if(instance.anime){
+    	instance.offsetX += (instance.speed*0.1);
+		instance.drawCircle();
+		instance.drawSin(instance.offsetX);
+		instance.drawText();
+		instance.id = requestAnimationFrame(function(){
+			_render(instance);
+		});	
+    }else {
+    	instance.offsetX += (instance.speed*0.1);
+		instance.drawCircle();
+		instance.drawSin(instance.offsetX);
+		instance.drawText();
+    }
+}
+
 Hliquid.render = function(options){
 	var instance = new Hliquid(options);
-
-	var _render = function(){
-		instance.context.clearRect(0, 0, instance.w, instance.h);
-
-		if(instance.startValue < instance.value){
-            instance.startValue++;
-        }
-        if(instance.startValue > instance.value){
-            var tmp = 1;
-            instance.startValue--;
-        }
-
-        if(instance.anime){
-        	instance.offsetX += (instance.speed*0.1);
-			instance.drawCircle();
-			instance.drawSin(instance.offsetX);
-			instance.drawText();
-			instance.id = requestAnimationFrame(_render);	
-        }else {
-        	instance.offsetX += (instance.speed*0.1);
-			instance.drawCircle();
-			instance.drawSin(instance.offsetX);
-			instance.drawText();
-        }
-		
-	}
 	
-	_render();
+	_render(instance);
 
 	return instance;	
 }
 
+Hliquid.prototype.update = function(value){
+	if(typeof value !== 'undefined'){ //更新数值
+		this.value = value;
+	}else{ //更新大小
+		this.w = this.canvas.width = utils.width(this.wrapper);
+		this.h = this.canvas.height = utils.height(this.wrapper);
+	}
+	this.stop();
+	_render(this);
+}
 
 
 
