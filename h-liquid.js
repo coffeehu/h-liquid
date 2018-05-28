@@ -170,6 +170,7 @@ var Hliquid = window.Hliquid = function(options){
 		}*/
 		this.offsetX = 0;
 		this.startValue = 0;
+		this.startY = this.h;
 		this.init(options);
 	}
 }
@@ -226,7 +227,7 @@ Hliquid.prototype.drawSin = function(offsetX){
 				Math.sin(x*m)  --> m越大，sin的波纹频率越高，越密集（也就是周期越端小）
 				Math.sin(x + z) --> +-z,控制波纹左右偏移的位置。因此，z 越大，视觉效果看来，波纹移动的越快
 			*/
-			var y = this.h * ( 1 - this.value/100 ) + this.borderOffset + this.waveHeight * Math.sin(x*this.waveWidth*0.01 + offsetX);
+			var y = this.startY + this.waveHeight * Math.sin(x*this.waveWidth*0.01 + offsetX);
             points.push([x, y]);
             context.lineTo(x, y);
 		}
@@ -277,9 +278,18 @@ var _render = function(instance){
         instance.startValue++;
     }
     if(instance.startValue > instance.value){
-        var tmp = 1;
         instance.startValue--;
     }
+
+    // 实现水波升降过渡效果
+    var endY = instance.h * ( 1 - instance.value/100 ) + instance.borderOffset;
+    if(instance.startY < endY){
+    	instance.startY++;
+    }
+    if(instance.startY > endY){
+    	instance.startY--;
+    }
+    
 
     if(instance.anime){
     	instance.offsetX += (instance.speed*0.1);
