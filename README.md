@@ -6,7 +6,7 @@
 <script src="./h-liquid.js"></script>
 ```
 
-#### [在线演示](http://note.youdao.com/)
+### [在线演示](http://www.hcbook.cc/demo/h-liquid/)
 
 ## 用法示例
 ```
