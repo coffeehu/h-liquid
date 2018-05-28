@@ -177,6 +177,7 @@ var Hliquid = window.Hliquid = function(options){
 Hliquid.prototype.init = function(options){
 	this.value = (typeof options.value === 'undefined') ? 10 : Number(options.value);
 	this.color = options.color || '#1bb8ff';
+	this.background = options.background;
 	this.textSize = options.textSize;
 	this.textColor = options.textColor || '#fff';
 	this.borderColor = options.borderColor || this.color;
@@ -191,6 +192,7 @@ Hliquid.prototype.init = function(options){
 Hliquid.prototype.drawCircle = function(){
 	var context = this.context;
 
+	context.save();
 	context.beginPath();
 	context.lineWidth = this.borderWidth;
 	context.strokeStyle = this.borderColor;
@@ -201,6 +203,11 @@ Hliquid.prototype.drawCircle = function(){
 	var x = this.borderWidth < 3 ? (3-this.borderWidth) : 0; //半径修正值，因为实际效果中，当 borderWidth 很小时，水波半径会稍稍超出圆框。
 	var r = this.h/2-this.borderWidth-this.borderOffset - x; //半径
 	context.arc(this.h/2, this.h/2, r, 0, Math.PI * 2);
+	if(this.background){
+		context.fillStyle = this.background;
+		context.fill();
+	}
+	context.restore();
 	context.clip();
 
 }
