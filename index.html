@@ -3,6 +3,13 @@
 <head>
 	<title></title>
 	<style type="text/css">
+		button {
+			outline: none;
+			border: none;
+			padding: 15px 20px;
+			border-radius: 2px;
+			cursor: pointer;
+		}
         #test {
         	margin: 30px auto;
         	width: 10vw;
@@ -22,6 +29,11 @@
 	<canvas id="canvas" width="150" height="150">hello</canvas>
 
 	<button id="update">update</button>
+	<button id="reset">reset</button>
+	<button id="full">full</button>
+	<br>
+	<button style="margin-top: 20px;" id="stop">stop</button>
+	<button id="start">start</button>
 
 
 <script type="text/javascript">
@@ -40,14 +52,30 @@
 		//waveHeight: 5, // 波纹幅度
 		//waveWidth: 6, //波纹宽度（密集度）
 		//speed: 1, // 波动速度
-		//anime: false // 开启动画
+		//anime: false, // 开启动画
+		maxStyle: {  // value达到100时的样式
+			text: '满了',
+			textColor: 'red',
+			color: 'yellow'
+		}
 	}
 	var instance = Hliquid.render(option);
-
-	document.getElementById('update').onclick = function(){
-		instance.update(40);
-	}
 	window.onresize = function(){
+		instance.update();
+	}
+	document.getElementById('update').onclick = function(){
+		instance.update(30);
+	}
+	document.getElementById('reset').onclick = function(){
+		instance.update(60);
+	}
+	document.getElementById('full').onclick = function(){
+		instance.update(100);
+	}
+	document.getElementById('stop').onclick = function(){
+		instance.stop();
+	}
+	document.getElementById('start').onclick = function(){
 		instance.update();
 	}
 

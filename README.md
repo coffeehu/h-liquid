@@ -32,6 +32,11 @@ var option = {
 	//waveWidth: 6, //波纹宽度（密集度）
 	//speed: 1, // 波动速度
 	//anime: false // 开启动画
+	//maxStyle: {  // value达到100时的样式
+	//	text: '满了',
+	//	textColor: 'red',
+	//	color: 'yellow'
+	//}
 }
 
 instance.update(40); // 更新数值
@@ -64,6 +69,8 @@ Vue.use(Hliquid)
     :background="'#e2e2e2'"
     :waveWidth="4"
     :waveHeight="4"
+    :maxStyle="liquidMaxStyle"
+    ...
     >
 </Hliquid>
 ```

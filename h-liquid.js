@@ -142,6 +142,11 @@ var utils = {
 		waveWidth: 2, //波纹宽度（密集度）
 		speed: 0.8, // 波动速度
 		anime: true // 开启动画
+		maxStyle: {  // value达到100时的样式
+			text: '满了',
+			textColor: 'red',
+			color: 'yellow'
+		}
 	}
 */
 var Hliquid = window.Hliquid = function(options){
@@ -188,6 +193,7 @@ Hliquid.prototype.init = function(options){
 	this.waveWidth = options.waveWidth || 2;
 	this.speed = options.speed || 0.8;
 	this.anime = (typeof options.anime === 'boolean') ? options.anime : true;
+	this.maxStyle = options.maxStyle;
 }
 
 Hliquid.prototype.drawCircle = function(){
@@ -220,6 +226,13 @@ Hliquid.prototype.drawSin = function(offsetX){
 	var points = [];
 
 	if(this.anime){
+		// max style
+	    if(this.startValue === 100 && this.maxStyle && this.maxStyle.color){
+	    	context.fillStyle = this.maxStyle.color;
+	    }else{
+	    	context.fillStyle = this.color;
+	    }
+
 		for(var x=0; x<this.w; x += 20/this.w){
 			/*
 				this.h * ( 1 - this.value/100 ) 起始 y 值
@@ -232,6 +245,12 @@ Hliquid.prototype.drawSin = function(offsetX){
             context.lineTo(x, y);
 		}
 	}else{
+		// max style
+	    if(this.value === 100 && this.maxStyle && this.maxStyle.color){
+	    	context.fillStyle = this.maxStyle.color;
+	    }else{
+	    	context.fillStyle = this.color;
+	    }
 		var y = this.h * ( 1 - this.value/100 ) + this.borderOffset;
         points.push([0, y]);
         context.lineTo(0, y);
@@ -241,9 +260,7 @@ Hliquid.prototype.drawSin = function(offsetX){
     context.lineTo(this.w, this.h);
     context.lineTo(0, this.h);
     context.lineTo(points[0][0], points[0][1]);
-    context.fillStyle = this.color;
     context.fill();
-
     context.restore();
 }
 
@@ -254,11 +271,27 @@ Hliquid.prototype.drawText = function(){
     var size = this.textSize || 0.4* ( this.w/2  );
     context.font = size + 'px Microsoft Yahei';
     context.textAlign = 'center';
-    context.fillStyle = this.textColor;
     if(this.anime){
-    	context.fillText(~~this.startValue + '%', this.w/2, this.h/2 + size / 2);
+    	var value;
+    	// max style
+    	if(this.startValue === 100 && this.maxStyle && this.maxStyle.text){
+    		value = this.maxStyle.text;
+    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+    	}else{
+    		value = ~~this.startValue + '%';
+    		context.fillStyle = this.textColor;
+    	}
+    	context.fillText(value, this.w/2, this.h/2 + size / 2);
     }else{
-    	context.fillText(~~this.value + '%', this.w/2, this.h/2 + size / 2);
+    	var value;
+    	if(this.value === 100 && this.maxStyle && this.maxStyle.text){
+    		value = this.maxStyle.text;
+    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+    	}else {
+    		value = ~~this.value + '%';
+    		context.fillStyle = this.textColor;
+    	}
+    	context.fillText(value, this.w/2, this.h/2 + size / 2);
     }
 
     context.restore();

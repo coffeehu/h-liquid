@@ -57,6 +57,10 @@ export default {
 		anime: {
 			type: Boolean,
 			default: true
+		},
+		maxStyle: {
+			type: Object,
+			default: null
 		}
 	},
 
@@ -113,6 +117,13 @@ export default {
 			let points = [];
 
 			if(this.anime){
+				// max style
+			    if(this.startValue === 100 && this.maxStyle && this.maxStyle.color){
+			    	context.fillStyle = this.maxStyle.color;
+			    }else{
+			    	context.fillStyle = this.color;
+			    }
+
 				for(let x=0; x<this.w; x += 20/this.w){
 					/*
 						this.h * ( 1 - this.value/100 ) 起始 y 值
@@ -125,6 +136,13 @@ export default {
 		            context.lineTo(x, y);
 				}
 			}else{
+				// max style
+			    if(this.value === 100 && this.maxStyle && this.maxStyle.color){
+			    	context.fillStyle = this.maxStyle.color;
+			    }else{
+			    	context.fillStyle = this.color;
+			    }
+
 				let y = this.h * ( 1 - this.value/100 ) + this.borderOffset;
 		        points.push([0, y]);
 		        context.lineTo(0, y);
@@ -134,9 +152,7 @@ export default {
 		    context.lineTo(this.w, this.h);
 		    context.lineTo(0, this.h);
 		    context.lineTo(points[0][0], points[0][1]);
-		    context.fillStyle = this.color;
 		    context.fill();
-
 		    context.restore();
 		},
 		drawText() {
@@ -146,11 +162,28 @@ export default {
 		    let size = this.textSize || 0.4* ( this.w/2  );
 		    context.font = size + 'px Microsoft Yahei';
 		    context.textAlign = 'center';
-		    context.fillStyle = this.textColor;
 		    if(this.anime){
-		    	context.fillText(~~this.startValue + '%', this.w/2, this.h/2 + size / 2);
+		    	let value;
+		    	// max style
+		    	if(this.startValue === 100 && this.maxStyle && this.maxStyle.text){
+		    		value = this.maxStyle.text;
+		    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+		    	}else{
+		    		value = ~~this.startValue + '%';
+		    		context.fillStyle = this.textColor;
+		    	}
+		    	context.fillText(value, this.w/2, this.h/2 + size / 2);
 		    }else{
-		    	context.fillText(~~this.value + '%', this.w/2, this.h/2 + size / 2);
+		    	let value;
+		    	// max style
+		    	if(this.value === 100 && this.maxStyle && this.maxStyle.text){
+		    		value = this.maxStyle.text;
+		    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+		    	}else {
+		    		value = ~~this.value + '%';
+		    		context.fillStyle = this.textColor;
+		    	}
+		    	context.fillText(value, this.w/2, this.h/2 + size / 2);
 		    }
 
 		    context.restore();
