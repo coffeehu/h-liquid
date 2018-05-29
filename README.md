@@ -32,8 +32,13 @@ var option = {
 	//waveWidth: 6, //波纹宽度（密集度）
 	//speed: 1, // 波动速度
 	//anime: false // 开启动画
-	//maxStyle: {  // value达到100时的样式
+	//maxStyle: {  // 定制 value 达到 100 时的样式
 	//	text: '满了',
+	//	textColor: 'red',
+	//	color: 'yellow'
+	//},
+	//exceedStyle: { // 定制 value 超过 100 时的样式
+	//	text: '超过了',
 	//	textColor: 'red',
 	//	color: 'yellow'
 	//}

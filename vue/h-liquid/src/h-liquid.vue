@@ -61,6 +61,10 @@ export default {
 		maxStyle: {
 			type: Object,
 			default: null
+		},
+		exceedStyle: {
+			type: Object,
+			default: null
 		}
 	},
 
@@ -117,9 +121,11 @@ export default {
 			let points = [];
 
 			if(this.anime){
-				// max style
+			    // max style
 			    if(this.startValue === 100 && this.maxStyle && this.maxStyle.color){
 			    	context.fillStyle = this.maxStyle.color;
+			    }else if(this.startValue > 100 && this.exceedStyle && this.exceedStyle.color){
+			    	context.fillStyle = this.exceedStyle.color;
 			    }else{
 			    	context.fillStyle = this.color;
 			    }
@@ -139,6 +145,8 @@ export default {
 				// max style
 			    if(this.value === 100 && this.maxStyle && this.maxStyle.color){
 			    	context.fillStyle = this.maxStyle.color;
+			    }else if(this.value > 100 && this.exceedStyle && this.exceedStyle.color){
+			    	context.fillStyle = this.exceedStyle.color;
 			    }else{
 			    	context.fillStyle = this.color;
 			    }
@@ -168,6 +176,9 @@ export default {
 		    	if(this.startValue === 100 && this.maxStyle && this.maxStyle.text){
 		    		value = this.maxStyle.text;
 		    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+		    	}else if(this.startValue > 100 && this.exceedStyle && this.exceedStyle.text) {
+		    		value = this.exceedStyle.text;
+		    		if( this.exceedStyle.textColor ) context.fillStyle = this.exceedStyle.textColor;
 		    	}else{
 		    		value = ~~this.startValue + '%';
 		    		context.fillStyle = this.textColor;
@@ -179,6 +190,9 @@ export default {
 		    	if(this.value === 100 && this.maxStyle && this.maxStyle.text){
 		    		value = this.maxStyle.text;
 		    		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+		    	}else if(this.value > 100 && this.exceedStyle && this.exceedStyle.text){
+		    		value = this.exceedStyle.text;
+		    		if( this.exceedStyle.textColor ) context.fillStyle = this.exceedStyle.textColor;
 		    	}else {
 		    		value = ~~this.value + '%';
 		    		context.fillStyle = this.textColor;

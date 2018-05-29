@@ -142,8 +142,13 @@ var utils = {
 		waveWidth: 2, //波纹宽度（密集度）
 		speed: 0.8, // 波动速度
 		anime: true // 开启动画
-		maxStyle: {  // value达到100时的样式
+		maxStyle: {  // 定制 value 达到 100 时的样式
 			text: '满了',
+			textColor: 'red',
+			color: 'yellow'
+		},
+		exceedStyle: { // 定制 value 超过 100 时的样式
+			text: '超过了',
 			textColor: 'red',
 			color: 'yellow'
 		}
@@ -194,6 +199,7 @@ Hliquid.prototype.init = function(options){
 	this.speed = options.speed || 0.8;
 	this.anime = (typeof options.anime === 'boolean') ? options.anime : true;
 	this.maxStyle = options.maxStyle;
+	this.exceedStyle = options.exceedStyle;
 }
 
 Hliquid.prototype.drawCircle = function(){
@@ -229,6 +235,8 @@ Hliquid.prototype.drawSin = function(offsetX){
 		// max style
 	    if(this.startValue === 100 && this.maxStyle && this.maxStyle.color){
 	    	context.fillStyle = this.maxStyle.color;
+	    }else if(this.startValue > 100 && this.exceedStyle && this.exceedStyle.color){
+	    	context.fillStyle = this.exceedStyle.color;
 	    }else{
 	    	context.fillStyle = this.color;
 	    }
@@ -248,9 +256,12 @@ Hliquid.prototype.drawSin = function(offsetX){
 		// max style
 	    if(this.value === 100 && this.maxStyle && this.maxStyle.color){
 	    	context.fillStyle = this.maxStyle.color;
+	    }else if(this.value > 100 && this.exceedStyle && this.exceedStyle.color){
+	    	context.fillStyle = this.exceedStyle.color;
 	    }else{
 	    	context.fillStyle = this.color;
 	    }
+	    
 		var y = this.h * ( 1 - this.value/100 ) + this.borderOffset;
         points.push([0, y]);
         context.lineTo(0, y);
@@ -277,6 +288,9 @@ Hliquid.prototype.drawText = function(){
     	if(this.startValue === 100 && this.maxStyle && this.maxStyle.text){
     		value = this.maxStyle.text;
     		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+    	}else if(this.startValue > 100 && this.exceedStyle && this.exceedStyle.text) {
+    		value = this.exceedStyle.text;
+    		if( this.exceedStyle.textColor ) context.fillStyle = this.exceedStyle.textColor;
     	}else{
     		value = ~~this.startValue + '%';
     		context.fillStyle = this.textColor;
@@ -287,6 +301,9 @@ Hliquid.prototype.drawText = function(){
     	if(this.value === 100 && this.maxStyle && this.maxStyle.text){
     		value = this.maxStyle.text;
     		if( this.maxStyle.textColor ) context.fillStyle = this.maxStyle.textColor;
+    	}else if(this.value > 100 && this.exceedStyle && this.exceedStyle.text){
+    		value = this.exceedStyle.text;
+    		if( this.exceedStyle.textColor ) context.fillStyle = this.exceedStyle.textColor;
     	}else {
     		value = ~~this.value + '%';
     		context.fillStyle = this.textColor;
