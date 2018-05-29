@@ -69,6 +69,9 @@ export default {
 
 		this.render();		
 	},
+	beforeDestroy() {
+		this.stop();
+	},
 
 	data() {
 		return {
