@@ -8,6 +8,10 @@
 
 ### [在线演示](http://www.hcbook.cc/demo/h-liquid/)
 
+## 效果
+![image](./imgs/example.png)
+
+
 ## 用法示例
 ```
 <div id="test"></div>
@@ -41,5 +45,34 @@ instance.stop();  // 停止动画。停止后，若想继续动画可调用 inst
 
 ```
 
-## 效果
-![image](./imgs/example.png)
+## Vue 版
+
+1、安装
+```
+npm install h-liquid --save
+```
+2、引入
+```
+import Hliquid from 'h-liquid'
+Vue.use(Hliquid)
+```
+3、使用
+```
+<Hliquid class="home-liquid" ref="liquid" 
+    :value="80"
+    :borderWidth="0.1" 
+    :background="'#e2e2e2'"
+    :waveWidth="4"
+    :waveHeight="4"
+    >
+</Hliquid>
+```
+
+方法：
+```
+this.$ref['liquid'].stop(); //停止
+
+window.onresize = function(){
+ this.$ref['liquid'].update();   //自适应重绘
+}
+```

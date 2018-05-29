@@ -1,0 +1,23 @@
+{
+  "name": "h-liquid",
+  "version": "1.0.1",
+  "description": "liquid, water-ball",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coffeehu/h-liquid.git"
+  },
+  "keywords": [
+    "liquid",
+    "water-ball"
+  ],
+  "author": "coffeehu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coffeehu/h-liquid/issues"
+  },
+  "homepage": "https://github.com/coffeehu/h-liquid#readme"
+}
