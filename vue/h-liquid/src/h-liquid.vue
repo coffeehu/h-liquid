@@ -251,7 +251,6 @@ export default {
 			const canvas = this.$refs.canvas;
 			this.w = canvas.width = domUtils.width(this.$el);
 			this.h = canvas.height = domUtils.height(this.$el);
-			console.log(this.w, this.h)
 			this.render();
 		}
 	}
